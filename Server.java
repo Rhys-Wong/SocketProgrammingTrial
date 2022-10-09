@@ -1,24 +1,57 @@
-import java.io.*;
 import java.net.*;
-import java.util.*;
+import java.io.*;
+import java.util.Scanner;
 
 public class Server {
-    public static void main(String args[]) throws IOException{
-        ServerSocket ss = new ServerSocket(4999);
-        Socket s = ss.accept();
 
-        //System.out.println("Client accepted! Congrats!");
+    public static void main(String[] args) throws Exception {
 
-        InputStreamReader input = new InputStreamReader(s.getInputStream());
-        BufferedReader br = new BufferedReader(input);
 
-        String str = br.readLine();
-        System.out.println("Client : " + str);
+        Socket s = null;
+        InputStreamReader input = null;
+        OutputStreamWriter output = null;
+        BufferedWriter brw = null;
+        BufferedReader brr = null;
 
-        PrintWriter pr = new PrintWriter(s.getOutputStream());
-        pr.println("Muchas Gracias");
-        pr.flush();
+        ServerSocket ss = null;
+        ss = new ServerSocket(4999);
 
+        while(true){
+
+            try {
+                s = ss.accept();
+
+                input = new InputStreamReader(s.getInputStream());
+                output = new OutputStreamWriter(s.getOutputStream());
+                brw = new BufferedWriter(output);
+                brr = new BufferedReader(input);
+
+                while(true){
+                    String msgfromclient = brr.readLine();
+
+                    System.out.println("CLient : " + msgfromclient);
+
+                    brw.write("Received!");
+                    brw.newLine();
+                    brw.flush();
+
+                    if(msgfromclient.equalsIgnoreCase("Disconnect")){
+                        break;
+                    }
+
+                    
+                }
+                    s.close();
+                    input.close();
+                    output.close();
+                    brr.close();
+                    brw.close();
+                
+            }
+            catch(IOException e) {
+                e.printStackTrace();
+            }
+            
+        }
     }
-    
 }
