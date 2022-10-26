@@ -31,7 +31,7 @@ public class Server {
 
                     System.out.println("CLient : " + msgfromclient);
 
-                    brw.write("Received!");
+                    brw.write("Received you bitch ass!");
                     brw.newLine();
                     brw.flush();
 
